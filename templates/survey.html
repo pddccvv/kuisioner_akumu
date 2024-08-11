@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Survey</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .rating {
+        direction: rtl;
+        font-size: 2rem;
+        unicode-bidi: bidi-override;
+        display: flex;
+        gap: 0.1rem; /* Adjust the gap between stars */
+      }
+      .rating > input {
+        display: none;
+      }
+      .rating > label {
+        color: #ddd;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+      .rating > input:checked ~ label {
+        color: #f5c518;
+      }
+      .rating > label:hover,
+      .rating > label:hover ~ label {
+        color: #f5c518;
+      }
+      .question-container {
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const nameInput = document.getElementById("name");
+        const questions = document.querySelectorAll(".question-container");
+        const suggestion = document.getElementById("suggestion");
+
+        function toggleFormElements() {
+          const isNameFilled = nameInput.value.trim() !== "";
+          questions.forEach((question) => {
+            question.classList.toggle("hidden", !isNameFilled);
+          });
+          suggestion.disabled = !isNameFilled;
+        }
+
+        nameInput.addEventListener("input", toggleFormElements);
+
+        // Initialize form elements as hidden
+        toggleFormElements();
+      });
+    </script>
+  </head>
+  <body class="bg-gray-100">
+    <div
+      class="container mx-auto mt-6 p-4 bg-white rounded-lg shadow-md max-w-lg"
+    >
+      <h3 class="text-2xl font-bold text-center mb-5">SURVEI AKUMU</h3>
+      <form action="{{ url_for('survey') }}" method="POST" class="space-y-4">
+        <div class="mb-4">
+          <label for="name" class="block text-gray-700 font-bold text-lg">
+            Your Name
+          </label>
+          <input
+            type="text"
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2"
+            id="name"
+            name="name"
+            required
+          />
+        </div>
+
+        {% for i in range(1, 10) %}
+        <div class="question-container hidden">
+          <label
+            for="question{{ i }}"
+            class="block text-gray-700 font-bold text-lg"
+          >
+            {% if i == 1 %}Bagaimana penilaian Anda terhadap kemudahan
+            penggunaan aplikasi ini?{% elif i == 2 %}Seberapa baik aplikasi ini
+            memenuhi kebutuhan Anda?{% elif i == 3 %}Bagaimana Anda menilai
+            kecepatan aplikasi saat digunakan?{% elif i == 4 %}Bagaimana
+            kualitas antarmuka pengguna (UI) aplikasi ini menurut Anda?{% elif i
+            == 5 %}Seberapa mudah Anda menemukan fitur yang Anda butuhkan di
+            aplikasi ini?{% elif i == 6 %}Seberapa baik performa aplikasi dalam
+            hal stabilitas dan minimnya bug?{% elif i == 7 %}Bagaimana Anda
+            menilai pengalaman keseluruhan Anda dengan aplikasi ini?{% elif i ==
+            8 %}Seberapa efektif aplikasi ini dalam menyelesaikan tugas atau
+            masalah yang Anda hadapi?{% elif i == 9 %}Bagaimana Anda menilai
+            nilai aplikasi ini dibandingkan dengan aplikasi serupa yang Anda
+            gunakan?{% endif %}
+          </label>
+          <div class="rating">
+            <input
+              type="radio"
+              id="star5-{{ i }}"
+              name="question{{ i }}"
+              value="5"
+              required
+            />
+            <label for="star5-{{ i }}" title="5 stars">
+              <i class="fas fa-star"></i>
+            </label>
+            <input
+              type="radio"
+              id="star4-{{ i }}"
+              name="question{{ i }}"
+              value="4"
+              required
+            />
+            <label for="star4-{{ i }}" title="4 stars">
+              <i class="fas fa-star"></i>
+            </label>
+            <input
+              type="radio"
+              id="star3-{{ i }}"
+              name="question{{ i }}"
+              value="3"
+              required
+            />
+            <label for="star3-{{ i }}" title="3 stars">
+              <i class="fas fa-star"></i>
+            </label>
+            <input
+              type="radio"
+              id="star2-{{ i }}"
+              name="question{{ i }}"
+              value="2"
+              required
+            />
+            <label for="star2-{{ i }}" title="2 stars">
+              <i class="fas fa-star"></i>
+            </label>
+            <input
+              type="radio"
+              id="star1-{{ i }}"
+              name="question{{ i }}"
+              value="1"
+              required
+            />
+            <label for="star1-{{ i }}" title="1 star">
+              <i class="fas fa-star"></i>
+            </label>
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="question-container hidden">
+          <label for="suggestion" class="block text-gray-700 font-bold text-lg">
+            Saran dan masukan anda untuk developer, agar dapat meningkatkan
+            kualitas aplikasi
+          </label>
+          <textarea
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2"
+            id="suggestion"
+            name="suggestion"
+            rows="4"
+            placeholder="Berikan saran disini!"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          id="btn-submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+        >
+          Submit Survey
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

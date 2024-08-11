@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thank You</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script>
+      function closeWindow() {
+        // Coba menutup tab atau jendela
+        window.close();
+      }
+
+      window.onload = function () {
+        // Tunggu 6 detik sebelum menutup tab
+        setTimeout(closeWindow, 6000);
+      };
+    </script>
+  </head>
+  <body class="bg-gray-100">
+    <div class="container mx-auto text-center mt-20">
+      <h1 class="text-4xl font-bold mb-6">Thank You for Your Feedback!</h1>
+      <p class="mb-6">
+        Your responses have been recorded. We appreciate your time. You will be
+        redirected shortly.
+      </p>
+    </div>
+  </body>
+</html>
