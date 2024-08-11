@@ -1,16 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
-import qrcode
 import pymysql
 
 app = Flask(__name__)
 
 # Database connection
 connection = pymysql.connect(host="localhost", user="root", password="", db="survey_db")
-
-# Generate QR Code
-url = "http://your-domain.com/survey"
-qr = qrcode.make(url)
-qr.save("static/qr_code.png")
 
 
 @app.route("/")
